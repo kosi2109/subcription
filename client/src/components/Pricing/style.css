@@ -1,0 +1,32 @@
+.card{
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+}
+
+.color{
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+}
+
+.color3{
+    background-color: #b9f2ff;
+}
+
+.color1{
+    background-color: #729ad6;
+}
+
+.color2{
+    background-color: #C0C0C0;
+}
+
+.color0{
+    background-color: black;
+}
+
+
