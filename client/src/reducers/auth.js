@@ -10,8 +10,11 @@ export default (state = { profile: null, loading: false }, action) => {
       return { ...state, profile: action.payload };
     case LOGOUT:
       localStorage.removeItem("profile");
-      return state;
+      localStorage.removeItem("user");
+      return { ...state, profile: null };
     case GETUSER:
+      const {userName , fullName , plan } = action.payload
+      localStorage.setItem("user", JSON.stringify({userName,fullName,plan}));
       return { ...state, profile: action.payload };
     default:
       return state;

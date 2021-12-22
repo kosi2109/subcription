@@ -1,6 +1,10 @@
 const mongoose = require("mongoose")
 
 const userSchema = mongoose.Schema({
+    fullName :{
+        type : String,
+        required : true
+    },
     userName : {
         type : String,
         required : true
@@ -13,6 +17,10 @@ const userSchema = mongoose.Schema({
         type : mongoose.Types.ObjectId,
         ref : "Plan",
         required : false
+    },
+    isAdmin : {
+        type : Boolean,
+        default : false
     }
 })
 

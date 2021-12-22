@@ -6,20 +6,25 @@ import useStyle from "./style"
 
 export default function Blog({id,title,date,plan,intro}) {
   const classes = useStyle()
+  const showIntro = intro.substring(0,100) + "...";
+  
     return (
         <Grid item lg={3} md={4} sm={6} xs={12}>
-            <Paper elevation={3} variant="string">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-          <Card>                                                                                                                                                
+            <Paper elevation={3} >                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+          <Card className={classes.card}>                                                                                                                                                
           <CardMedia className={classes.media} image={'https://i.picsum.photos/id/437/200/300.jpg?hmac=qjAKcFjQXvVBX_di7_9jMlPlgfQZUK2AV1IQ6W1eIIw'} title={title} />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography gutterBottom variant="h5" className={classes.title} >
                 {title}
               </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {intro}
+              <div className={classes.introContainer}>
+              <Typography variant="body1" className={classes.intro}>
+                {showIntro}
               </Typography>
+
+              </div>
               <div style={{display:"flex" ,justifyContent:"space-between",marginTop:"1em"}}>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2">
                {moment(date).format("D/MM/YYYY")}
                 
               </Typography>

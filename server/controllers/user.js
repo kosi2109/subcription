@@ -10,23 +10,25 @@ const getUsers = async (req,res)=>{
 const getUser = async (req,res)=>{
     const {id} = req.params
     
-    if(!req.userId) res.json("User Not Login")
+    if(!req.userId) res.status(401).json("User Not Login")
 
     const userId = req.userId
     if (id == userId){
         const users = await User.findById(id).populate("plan")
         return res.json(users)
     }
-    res.status(401).json("You are not Authenticated")
+    return res.status(401).json("You are not Authenticated")
     
 }
 
 const createUser = async (req,res)=>{
     const hashPassword = await bcrypt.hash(req.body.password,10) 
     const data = {
+        fullName : req.body.fullName,
         userName : req.body.userName,
         password : hashPassword,
-        plan : req.body.plan
+        plan : req.body.plan,
+        isAdmin : req.body.isAdmin
     }
     try {
         const user = new User(data)
@@ -41,7 +43,7 @@ const login = async (req,res)=>{
     const userName = req.body.userName
     const password = req.body.password
    
-    const user  = await User.findOne({userName:userName})
+    const user  = await User.findOne({userName:userName}).populate("plan")
 
     if (!user) res.json("User not exist");
 
@@ -50,9 +52,8 @@ const login = async (req,res)=>{
     if(checkPass){
         const token = jwt.sign({
             userId : user.id,
-            plan : user.plan
         },"secret");
-        res.json({userId:user.id,token:token})
+        res.json({userId:user.id,token:token,fullName : user.fullName,userName : user.userName,plan : user.plan,})
 
     }else{
         res.json("Password Incorrect")

@@ -12,17 +12,16 @@ const checkPlan = async (req,res,next)=>{
       const token = req.headers.authorization.split(" ")[1];
       decode = jwt.verify(token, 'secret');
       req.userId = decode?.userId;
-      req.plan = decode?.plan;
-      next();
+      next()
     } catch (error) {
       var err = new Error('Not authorized! Go back!');
       err.status = 401;
       return next(err);
       
-    }
-
-
-    
+    } 
 }
+
+
+
 
 module.exports = checkPlan

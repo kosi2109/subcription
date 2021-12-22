@@ -1,3 +1,4 @@
+import React,{useState} from "react";
 import {
   AppBar,
   Avatar,
@@ -11,26 +12,33 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import React from "react";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/auth";
 
-const pages = [{ name: "Pricing", uri: "/pricing" }];
+
+const pages = [{ name: "Blogs", uri: "/" },{ name: "Pricing", uri: "/pricing" }];
 
 const Nav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const logoutHandle = () => {
     const {userId} = JSON.parse(localStorage.getItem("profile"))
     dispatch(logout(userId,navigate));
     setAnchorElNav(null);
     setAnchorElUser(null);
+    
   };
+
+  const toProfile = ()=>{
+    navigate('/profile')
+    setAnchorElNav(null);
+    setAnchorElUser(null);
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -47,8 +55,13 @@ const Nav = () => {
     setAnchorElUser(null);
   };
 
-  const profile = localStorage.getItem("profile");
-
+  
+  const profile = localStorage.getItem("profile") 
+  
+  if (profile){
+    var user = JSON.parse(profile)
+  }
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -67,7 +80,6 @@ const Nav = () => {
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
@@ -96,8 +108,8 @@ const Nav = () => {
             >
               {pages.map((page, key) => (
                 <MenuItem key={key} onClick={handleCloseNavMenu}>
-                  <Link to={page.uri}>
-                    <Typography textAlign="center">{page.name}</Typography>
+                  <Link to={page.uri} style={{ textDecoration: "none" ,color:"#252525" }}>
+                    <Typography>{page.name}</Typography>
                   </Link>
                 </MenuItem>
               ))}
@@ -106,21 +118,24 @@ const Nav = () => {
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, key) => (
-              <Link to={page.uri} style={{ textDecoration: "none" }}>
+              
                 <Button
                   key={key}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
+                  <Link key={key} to={page.uri} style={{ textDecoration: "none",color:"#252525" }}>
+
                   {page.name}
+                  </Link>
                 </Button>
-              </Link>
+            
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
@@ -141,22 +156,23 @@ const Nav = () => {
               onClose={handleCloseUserMenu}
             >
               {profile ? (<>
-                <Link to="/" style={{textDecoration:"none",color:"black"}}>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">Profile</Typography>
+                  <MenuItem onClick={toProfile}>
+                    <Typography >{user.fullName}</Typography>
                   </MenuItem>
-                </Link>
+                
                 <MenuItem onClick={logoutHandle}>
-                  <Typography textAlign="center">Logout</Typography>
+                  <Typography >Logout</Typography>
                 </MenuItem>
                 
                 </>
               ) : (
-                <Link to="/auth" style={{textDecoration:"none",color:"black"}}>
+                
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">Login</Typography>
+                    <Link to="/auth" style={{textDecoration:"none",color:"black"}}>
+                    <Typography >Login</Typography>
+                    </Link>
                   </MenuItem>
-                </Link>
+                
               )}
             </Menu>
           </Box>

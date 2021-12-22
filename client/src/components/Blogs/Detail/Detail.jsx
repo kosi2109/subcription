@@ -25,8 +25,8 @@ export default function Detail() {
         )
     }
     return (
-        <Container maxWidth="md">
-            <Typography variant='h3' style={{margin:"1em 0"}}>{blog.title} {blog.plan && <Chip label={blog.plan.name} color="primary" /> }   </Typography>
+        <Container maxWidth="md" style={{padding:"0.5em"}}>
+            <Typography variant='h3' style={{margin:"0.5em 0"}}>{blog.title} {blog.plan && <Chip label={blog.plan.name} color="primary" /> }   </Typography>
             <Typography variant='h5' style={{margin:"0.2em 0"}}>{moment(blog.publish_date).format('D/MM/YYYY')}</Typography>
             <Typography variant="body1" style={{padding:"1rem"}}>{blog.body}</Typography>
             <Button onClick={back}><ArrowBackIcon/> Back</Button>

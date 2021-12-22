@@ -9,6 +9,12 @@ export default function Auth() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [form,setForm] = useState({userName:"",password:""})
+    const profile = localStorage.getItem("profile")
+
+    if (profile){
+        navigate('/')
+    }
+
     const handleChange = (e)=>{
         setForm({
             ...form,

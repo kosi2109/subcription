@@ -21,14 +21,3 @@ export const logout = (formData,navigate) => async (dispatch)=>{
         console.log(error);
     }
 }
-
-export const getUser = (id) => async (dispatch)=>{
-    try {
-        dispatch({type:LOADING})
-        const {data} = await api.user(id)
-        dispatch({type:GETUSER,payload:data})
-        dispatch({type:ENDLOADING})
-    } catch (error) {
-        console.log(error);
-    }
-}

@@ -6,7 +6,6 @@ import Loading from '../Loading/Loading'
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import { useNavigate } from 'react-router-dom'
 import "./style.css"
-import { getUser } from '../../actions/auth'
 
 export default function Pricing() {
     const dispatch = useDispatch()
@@ -16,20 +15,16 @@ export default function Pricing() {
         dispatch(getPlans())
     },[dispatch])
 
-    useEffect(()=>{
-        if (user){
-            dispatch(getUser(JSON.parse(user).userId))
-        }
-    },[dispatch])
-
+   
     const back = ()=>{
         navigate('/')
     }
-
+    if (user){
+        var profile = JSON.parse(user)
+    }
     const {plans,loading} = useSelector((state)=> state.plans)
-    const auth = useSelector((state)=> state.auth)
     
-    if (loading || auth.loading){
+    if (loading){
         return <>
             <Loading/>
         </>
@@ -68,7 +63,7 @@ export default function Pricing() {
                             <Typography variant='body2' style={{textAlign:"left",marginTop:"0.1rem"}}>{plan.detail}</Typography>
                             </CardContent>
                             <CardActionArea style={{display:"flex",justifyContent:"center"}}>
-                                <Typography variant='h6' style={{padding:"0.3rem"}}>{showPlan(auth.profile,plan)}</Typography>
+                                <Typography variant='h6' style={{padding:"0.3rem"}}>{showPlan(profile,plan)}</Typography>
                             </CardActionArea>
                         </Card>
                     </Paper>
