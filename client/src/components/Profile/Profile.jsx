@@ -1,13 +1,16 @@
 import React from 'react'
 import { Button, Card, CardActionArea, CardContent, Container, Paper, Typography } from "@material-ui/core"
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { getUser } from '../../actions/auth'
-import Loading from '../Loading/Loading'
-export default function Profile() {
-    
-    const profile = JSON.parse(localStorage.getItem("profile")) 
+import { useDispatch } from 'react-redux'
+import { logout } from '../../actions/auth'
+import { useNavigate } from 'react-router-dom'
 
+export default function Profile() {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const profile = JSON.parse(localStorage.getItem("profile")) 
+    const logoutHandle = ()=>{
+        dispatch(logout(profile.userId,navigate))
+    }
     
 
     return (
@@ -17,10 +20,10 @@ export default function Profile() {
                     <CardContent>
                         <Typography variant='h5'>User Name : {profile.userName}</Typography>
                         <Typography variant='h5'>Full Name : {profile.fullName}</Typography>
-                        <Typography variant='h5'>Current Plan : {profile.plan && profile.plan.name}</Typography>
+                        <Typography variant='h5'>Current Plan : {profile.plan ? profile.plan.name : "Free"}</Typography>
                     </CardContent>
                     <CardActionArea style={{display:"flex",justifyContent:"center"}}>
-                        <Button>Logout</Button>
+                        <Button onClick={logoutHandle} >Logout</Button>
                         <Button>Change Password</Button>
                     </CardActionArea>
                 </Card>

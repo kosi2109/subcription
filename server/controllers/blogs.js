@@ -34,7 +34,7 @@ const getBlog = async (req, res) => {
   let userPlan = 0;
   if (user) {
     if (user.isAdmin){
-      res.status(200).json(blog);
+      return res.status(200).json(blog);
     }else if (user.plan) {
       userPlan = user.plan.plan_no;
     }
@@ -42,10 +42,10 @@ const getBlog = async (req, res) => {
 
   if (userPlan < blog.plan.plan_no){
 
-    res.status(401).json("You Are Not Authenticate");
+    return res.status(401).json("You Are Not Authenticate");
   }
 
-  res.status(200).json(blog);
+  return res.status(200).json(blog);
 };
 
 module.exports = { getBlogs, createBlog, getBlog };

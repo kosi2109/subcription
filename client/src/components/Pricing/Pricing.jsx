@@ -6,6 +6,7 @@ import Loading from '../Loading/Loading'
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import { useNavigate } from 'react-router-dom'
 import "./style.css"
+import { selectPlan } from '../../actions/purchase'
 
 export default function Pricing() {
     const dispatch = useDispatch()
@@ -23,6 +24,7 @@ export default function Pricing() {
         var profile = JSON.parse(user)
     }
     const {plans,loading} = useSelector((state)=> state.plans)
+    const purchase = useSelector((state) => state.purchase)
     
     if (loading){
         return <>
@@ -40,6 +42,12 @@ export default function Pricing() {
                 }else if(userPlan.plan.plan_no = plan.plan_no){
                     return "Current"
                 }
+            }else{
+                if(plan.plan_no == 0){
+                    return "-"
+                }else{
+                    return "Upgrade"    
+                }
             }
         }else if(plan.plan_no == 0){
             return "-"
@@ -47,13 +55,18 @@ export default function Pricing() {
             return "Upgrade"
         }
     }
+
+    const select = (e)=>{
+        dispatch(selectPlan(e))
+        navigate('/purchase',{replace:true})
+    }
     
     return (
         <Container maxWidth="md">
             <Typography variant='h3' style={{textAlign:"center",padding:"1em"}}>Choose Your Plan</Typography>
             <Grid container spacing={2} >
                 {plans.map((plan,key)=>(
-                    <Grid item lg={3} key={key} >
+                    <Grid item lg={3} md={4} sm={6} xs={12} key={key} >
                     <Paper>
                         <Card className="card" style={{display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                             <div className={"color color"+plan.plan_no}></div> 
@@ -62,14 +75,14 @@ export default function Pricing() {
                             <Typography variant='body1' style={{textAlign:"left"}}>Price : {plan.price}/mot</Typography>
                             <Typography variant='body2' style={{textAlign:"left",marginTop:"0.1rem"}}>{plan.detail}</Typography>
                             </CardContent>
-                            <CardActionArea style={{display:"flex",justifyContent:"center"}}>
+                            <CardActionArea style={{display:"flex",justifyContent:"center"}} onClick={()=> select(plan._id)}>
                                 <Typography variant='h6' style={{padding:"0.3rem"}}>{showPlan(profile,plan)}</Typography>
                             </CardActionArea>
                         </Card>
                     </Paper>
                     </Grid>
                 ))}
-                    
+                        
                 
             </Grid>
             <Button style={{margin:"1rem 0"}} onClick={back}><ArrowBackIcon/> Back</Button>

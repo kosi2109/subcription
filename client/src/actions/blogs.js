@@ -1,5 +1,6 @@
 import * as api from "../api"
 import { ENDLOADING, GETBLOGS,GETBLOGSBYID, LOADING } from "../constants"
+import { logout } from "./auth"
 export const getBLogs = () => async (dispatch)=>{
     try {
         dispatch({type:LOADING})
@@ -19,6 +20,10 @@ export const getBlogById = (id,navigate) => async (dispatch)=>{
         dispatch({type:ENDLOADING})
     } catch (error) {
         if (error.response.status === 401){
+            const profile = localStorage.getItem("profile")
+            if (profile){
+                localStorage.removeItem("profile")
+            }
             navigate('/pricing')
         }
     }

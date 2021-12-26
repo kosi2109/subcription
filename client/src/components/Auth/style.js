@@ -1,6 +1,12 @@
 import {makeStyles} from "@material-ui/core"
 
-export const useStyle = makeStyles({
+export const useStyle = makeStyles((theme)=>({
+    root: {
+        width: '100%',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+      },
     container:{
         marginTop: "1rem"
     },
@@ -12,5 +18,13 @@ export const useStyle = makeStyles({
     },
     margin:{
         marginBottom: "1em"
+    },
+    error : {
+        backgroundColor : "#FF7F7F",
+        padding : '1em'
+    },
+    success : {
+        backgroundColor : "#4bb543",
+        padding : '1em'
     }
-})
+}))

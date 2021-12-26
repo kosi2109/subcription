@@ -14,9 +14,18 @@ const userSchema = mongoose.Schema({
         required : true
     },
     plan :{
-        type : mongoose.Types.ObjectId,
-        ref : "Plan",
-        required : false
+        plan_type:{
+            type : mongoose.Types.ObjectId,
+            ref : "Plan",
+            required : false
+        },
+        start_date:{
+            type : Date,
+            default : Date.now()
+        },
+        expired_in:{
+            type : Date
+        } 
     },
     isAdmin : {
         type : Boolean,

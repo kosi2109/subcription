@@ -22,13 +22,15 @@ const getUser = async (req,res)=>{
 }
 
 const createUser = async (req,res)=>{
+    const existUser = await User.findOne({userName:req.body.userName})
+    if (existUser){
+        return res.json({error: "Username already exists . "})
+    }
     const hashPassword = await bcrypt.hash(req.body.password,10) 
     const data = {
         fullName : req.body.fullName,
         userName : req.body.userName,
         password : hashPassword,
-        plan : req.body.plan,
-        isAdmin : req.body.isAdmin
     }
     try {
         const user = new User(data)
@@ -45,18 +47,18 @@ const login = async (req,res)=>{
    
     const user  = await User.findOne({userName:userName}).populate("plan")
 
-    if (!user) res.json("User not exist");
+    if (!user) res.json({error:"User not exist"});
 
     const checkPass = await bcrypt.compare(password,user.password)
 
     if(checkPass){
         const token = jwt.sign({
             userId : user.id,
-        },"secret");
+        },"secret",{expiresIn:120});
         res.json({userId:user.id,token:token,fullName : user.fullName,userName : user.userName,plan : user.plan,})
 
     }else{
-        res.json("Password Incorrect")
+        res.json({error : "Password Incorrect"})
     }
     
 }
