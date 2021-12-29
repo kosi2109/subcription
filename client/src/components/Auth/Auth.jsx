@@ -11,7 +11,7 @@ export default function Auth() {
     const [form,setForm] = useState({userName:"",fullName:"",password:"",comfirmPassword:""})
     const [signup,setSignup] = useState(false)
     const {profile,error} = useSelector((state)=> state.auth )
-    
+   
     const handleChange = (e)=>{
         setForm({
             ...form,
@@ -47,7 +47,7 @@ export default function Auth() {
                 <Typography variant='body2' style={{margin:"1rem 0",userSelect:"none",cursor:"pointer"}} onClick={()=> setSignup(!signup)} >{signup ? "Do You Already Have An Account ? Login ." : "You Don't have an account ? Signup ." }</Typography>
                 {error &&
                     <div className={classes.error}>
-                        <Typography variant='body2'>{error.error}</Typography>
+                        <Typography variant='body2'>{error}</Typography>
                     </div>
                 }
 

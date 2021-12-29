@@ -29,14 +29,20 @@ const getBlog = async (req, res) => {
  
   if (!blog) res.status(404).send("Blog Not Found");
 
-  const user = await User.findById(req.userId).populate("plan");
+  const user = await User.findById(req.userId).populate({ 
+    path: 'plan',
+    populate: {
+      path: 'plan_type',
+      model: 'Plan'
+    } 
+ })
 
   let userPlan = 0;
   if (user) {
     if (user.isAdmin){
       return res.status(200).json(blog);
-    }else if (user.plan) {
-      userPlan = user.plan.plan_no;
+    }else if (user.plan.plan_type) {
+      userPlan = user.plan.plan_type.plan_no;
     }
   }
 

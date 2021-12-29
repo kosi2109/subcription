@@ -20,11 +20,8 @@ export const getBlogById = (id,navigate) => async (dispatch)=>{
         dispatch({type:ENDLOADING})
     } catch (error) {
         if (error.response.status === 401){
-            const profile = localStorage.getItem("profile")
-            if (profile){
-                localStorage.removeItem("profile")
-            }
             navigate('/pricing')
         }
+        console.log(error.message);
     }
 }

@@ -20,7 +20,7 @@ export default function Profile() {
                     <CardContent>
                         <Typography variant='h5'>User Name : {profile.userName}</Typography>
                         <Typography variant='h5'>Full Name : {profile.fullName}</Typography>
-                        <Typography variant='h5'>Current Plan : {profile.plan ? profile.plan.name : "Free"}</Typography>
+                        <Typography variant='h5'>Current Plan : {profile.plan ? profile.plan : "Free"}</Typography>
                     </CardContent>
                     <CardActionArea style={{display:"flex",justifyContent:"center"}}>
                         <Button onClick={logoutHandle} >Logout</Button>

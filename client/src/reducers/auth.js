@@ -1,16 +1,17 @@
-import { LOGIN, LOGOUT, SIGNUP, ENDLOADING, LOADING, GETUSER } from "../constants";
-export default (state = { profile: null, loading: false , error : null }, action) => {
+import { LOGIN, LOGOUT, SIGNUP, ENDLOADING, LOADING, GETUSER ,UPGRADE , AUTH_ERROR ,CLOSE ,AUTH_SUCCESS } from "../constants";
+export default (state = { profile: null, loading: false , error : null ,success: null }, action) => {
   switch (action.type) {
     case LOADING:
       return { ...state, loading: true };
     case ENDLOADING:
       return { ...state, loading: false };
+    case AUTH_ERROR:
+      return { ...state, error: action.payload };
+      case AUTH_SUCCESS:
+        return { ...state, success: true };
+    case CLOSE:
+      return { ...state, error: false , success:null };
     case LOGIN:
-      const {error} = action.payload
-      if (error){
-        localStorage.setItem("error", JSON.stringify(action.payload));
-        return { ...state, error: action.payload };
-      }
       localStorage.setItem("profile", JSON.stringify(action.payload));
       return { ...state, profile: action.payload };
     case SIGNUP:
@@ -23,8 +24,12 @@ export default (state = { profile: null, loading: false , error : null }, action
       localStorage.removeItem("user");
       return { ...state, profile: null,error:null };
     case GETUSER:
-      console.log(action.payload);
       return {...state,profile:action.payload}
+    case UPGRADE:
+      const profile = JSON.parse(localStorage.getItem("profile"))
+      const upgraded = {...profile,plan:action.payload.plan}
+      localStorage.setItem("profile", JSON.stringify(upgraded));
+      return { ...state, profile: upgraded};
     default:
       return state;
   }

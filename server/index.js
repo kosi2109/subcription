@@ -30,7 +30,7 @@ const PORT = 8000
 try {
     mongoose.connect(DB,()=>{
         app.listen(PORT,()=>{
-            console.log("Server running on 3000");
+            console.log(`Server running on ${PORT}`);
         })
     })
 } catch (error) {

@@ -1,16 +1,17 @@
 import * as api from "../api"
-import { LOGIN , LOGOUT,SIGNUP, LOADING, ENDLOADING, GETUSER } from "../constants"
+import { LOGIN , LOGOUT,SIGNUP, LOADING, ENDLOADING, GETUSER, AUTH_ERROR, CLOSE } from "../constants"
 
 export const login = (formData,navigate) => async (dispatch)=>{
     try {
+        dispatch({type:LOADING})
         const {data} = await api.login(formData)
-        
         dispatch({type:LOGIN,payload:data})
-        if(!data.error){
-            navigate('/')
-        }
+        dispatch({type:ENDLOADING})
+        navigate("/")
     } catch (error) {
-        console.log(error);
+        if (error.response){
+            dispatch({type:AUTH_ERROR,payload:error.response.data.error})
+        }
     }
 }
 
@@ -33,7 +34,9 @@ export const signUp = (formData) => async (dispatch)=>{
         dispatch({type:SIGNUP,payload:data})
         dispatch({type:ENDLOADING})
     } catch (error) {
-        console.log(error);
+        if (error.response){
+            dispatch({type:AUTH_ERROR,payload:error.response.data.error})
+        }
     }
 }
 
@@ -49,4 +52,8 @@ export const getUserInfo = (id) => async (dispatch)=>{
             localStorage.removeItem("profile")
         }
     }
+}
+
+export const closePop = ()=> async (dispatch)=>{
+    dispatch({type:CLOSE})
 }

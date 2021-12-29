@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Container,Grid , Paper,Card,CardActionArea,CardContent, Typography ,Button } from "@material-ui/core"
 import { useDispatch, useSelector } from 'react-redux'
 import { getPlans } from '../../actions/plans'
@@ -7,11 +7,13 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import { useNavigate } from 'react-router-dom'
 import "./style.css"
 import { selectPlan } from '../../actions/purchase'
+import { getUserInfo } from '../../actions/auth'
 
 export default function Pricing() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = localStorage.getItem("profile")
+    
     useEffect(()=>{
         dispatch(getPlans())
     },[dispatch])
@@ -20,11 +22,15 @@ export default function Pricing() {
     const back = ()=>{
         navigate('/')
     }
-    if (user){
-        var profile = JSON.parse(user)
-    }
+    useEffect(()=>{
+        if (user){
+            var userId = JSON.parse(user).userId
+            dispatch(getUserInfo(userId))
+        }
+    },[dispatch])
+    
     const {plans,loading} = useSelector((state)=> state.plans)
-    const purchase = useSelector((state) => state.purchase)
+    const {profile} = useSelector((state) => state.auth)
     
     if (loading){
         return <>
@@ -34,12 +40,12 @@ export default function Pricing() {
     
     const showPlan = (userPlan,plan)=>{
         if (userPlan){
-            if (userPlan.plan){
-                if (userPlan.plan.plan_no < plan.plan_no){
+            if (userPlan.plan.plan_type){
+                if (userPlan.plan.plan_type.plan_no < plan.plan_no){
                     return "Upgrade"
-                }else if(userPlan.plan.plan_no > plan.plan_no){
+                }else if(userPlan.plan.plan_type.plan_no > plan.plan_no){
                     return "-"
-                }else if(userPlan.plan.plan_no = plan.plan_no){
+                }else if(userPlan.plan.plan_type.plan_no = plan.plan_no){
                     return "Current"
                 }
             }else{
