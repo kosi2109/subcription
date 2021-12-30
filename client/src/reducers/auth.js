@@ -24,6 +24,13 @@ export default (state = { profile: null, loading: false , error : null ,success:
       localStorage.removeItem("user");
       return { ...state, profile: null,error:null };
     case GETUSER:
+      const user = JSON.parse(localStorage.getItem("profile"))
+      if (!action.payload.plan){
+        action.payload.plan = "Free"
+      }
+      const update_user = {...user,plan:action.payload.plan}
+      
+      localStorage.setItem("profile", JSON.stringify(update_user));
       return {...state,profile:action.payload}
     case UPGRADE:
       const profile = JSON.parse(localStorage.getItem("profile"))

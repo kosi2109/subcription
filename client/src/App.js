@@ -1,6 +1,7 @@
-import React from 'react'
-import {  useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import {  useDispatch, useSelector } from 'react-redux'
 import {Routes,BrowserRouter,Route, Navigate} from "react-router-dom"
+import { getUserInfo } from './actions/auth'
 import Auth from './components/Auth/Auth'
 import Blogs from './components/Blogs/Blogs'
 import Detail from './components/Blogs/Detail/Detail'
@@ -12,9 +13,16 @@ import Pruchase from './components/Purchase/Pruchase'
 
 
 export default function App() {
-  
+  const dispatch = useDispatch()
   const {profile} = useSelector((state)=> state.auth)
   const user = localStorage.getItem("profile")
+
+  useEffect(()=>{
+    if(user){
+      dispatch(getUserInfo(JSON.parse(user).userId))
+      
+    }
+  },[])
   
   return (
     <BrowserRouter>

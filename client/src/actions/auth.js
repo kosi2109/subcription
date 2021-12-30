@@ -42,15 +42,19 @@ export const signUp = (formData) => async (dispatch)=>{
 
 
 export const getUserInfo = (id) => async (dispatch)=>{
+
     try{
+        
         dispatch({type:LOADING})
         const {data} = await api.user(id)
         dispatch({type:GETUSER,payload:data})
         dispatch({type:ENDLOADING})
+        
     }catch(e){
         if (e.response.status === 401){
             localStorage.removeItem("profile")
         }
+        console.log(e.message);
     }
 }
 

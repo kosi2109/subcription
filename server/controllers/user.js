@@ -2,6 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Plan } = require("../models/blogs");
+
 const getUsers = async (req, res) => {
   const users = await User.find();
   res.json(users);
@@ -9,19 +10,34 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   const { id } = req.params;
-
+  const today = new Date
   if (!req.userId) res.status(401).json("User Not Login");
 
   const userId = req.userId;
   if (id == userId) {
-    const users = await User.findById(id).populate({
+    var user = await User.findById(id).populate({
       path: "plan",
       populate: {
         path: "plan_type",
         model: "Plan",
       },
-    });
-    return res.json(users);
+    }); 
+    
+    if (today.getTime() > user.plan.expired_in?.getTime()){
+      user = await User.findByIdAndUpdate(id,{plan:{}},{new:true}).populate({
+        path: "plan",
+        populate: {
+          path: "plan_type",
+          model: "Plan",
+        },
+      });
+      
+    }
+
+    return res.status(200).json({userId: user.id,
+      fullName: user.fullName,
+      userName: user.userName,
+      plan: user.plan.plan_type?.name,});
   }
   return res.status(401).json("You are not Authenticated");
 };
