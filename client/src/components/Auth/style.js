@@ -21,10 +21,12 @@ export const useStyle = makeStyles((theme)=>({
     },
     error : {
         backgroundColor : "#FF7F7F",
-        padding : '1em'
+        padding : '1em',
+        margin : "5px"
     },
     success : {
         backgroundColor : "#4bb543",
-        padding : '1em'
+        padding : '1em',
+        margin : "5px"
     }
 }))

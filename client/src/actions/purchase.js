@@ -18,7 +18,7 @@ export const buyPlan = (form,navigate) => async (dispatch)=>{
         const {data} = await api.upgrade(form)
         dispatch({type:UPGRADE,payload:data})
         dispatch({type:ENDLOADING})
-        dispatch({type:AUTH_SUCCESS})
+        dispatch({type:AUTH_SUCCESS,payload:data.message})
         navigate("/")
     } catch (error) {
         

@@ -17,9 +17,11 @@ const getUser = async (req, res) => {
   if (id == userId) {
     var user = await User.findById(id).populate({
       path: "plan",
+      
       populate: {
         path: "plan_type",
         model: "Plan",
+        select : "-_id",
       },
     }); 
     
@@ -29,6 +31,7 @@ const getUser = async (req, res) => {
         populate: {
           path: "plan_type",
           model: "Plan",
+          select : "-_id",
         },
       });
       
@@ -37,7 +40,7 @@ const getUser = async (req, res) => {
     return res.status(200).json({userId: user.id,
       fullName: user.fullName,
       userName: user.userName,
-      plan: user.plan.plan_type?.name,});
+      plan: user.plan});
   }
   return res.status(401).json("You are not Authenticated");
 };
@@ -71,6 +74,7 @@ const login = async (req, res) => {
     populate: {
       path: "plan_type",
       model: "Plan",
+      select : "-_id",
     },
   });
 
@@ -131,10 +135,11 @@ const upgradePlan = async (req, res) => {
         populate: {
           path: "plan_type",
           model: "Plan",
+          select : "-_id",
         },
       });;
 
-    if (user.plan.plan_type.plan_no) {
+    if (user.plan.plan_type?.plan_no) {
       userPlan = user.plan.plan_type.plan_no;
     }
     
@@ -156,9 +161,10 @@ const upgradePlan = async (req, res) => {
         populate: {
           path: "plan_type",
           model: "Plan",
+          select : "-_id",
         },
       });
-      res.status(200).json({ plan: updateuser.plan.plan_type.name });
+      res.status(200).json({ plan: updateuser.plan.plan_type.name , message : `Plan has been upgraded to ${updateuser.plan.plan_type.name} Successfully` });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

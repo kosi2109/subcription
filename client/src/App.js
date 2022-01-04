@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import {  useDispatch, useSelector } from 'react-redux'
 import {Routes,BrowserRouter,Route, Navigate} from "react-router-dom"
 import { getUserInfo } from './actions/auth'
+import Editor from './components/Admin/Editor'
 import Auth from './components/Auth/Auth'
 import Blogs from './components/Blogs/Blogs'
 import Detail from './components/Blogs/Detail/Detail'
@@ -20,20 +21,21 @@ export default function App() {
   useEffect(()=>{
     if(user){
       dispatch(getUserInfo(JSON.parse(user).userId))
-      
     }
-  },[])
+  },[dispatch])
   
   return (
     <BrowserRouter>
       <Nav/>
       <Routes>
         <Route element={<Blogs/>} path="/" />
+        <Route element={<Blogs/>} path="/blog" />
         <Route element={<Detail/>} path="/b/:id" />
-        <Route element={!profile && !user ? <Auth/> :   <Navigate replace to="/"/>} path="/auth" />
+        <Route element={!user ? <Auth/> :   <Navigate replace to="/"/>} path="/auth" />
         <Route element={<Pricing/>} path="/pricing" />
         <Route element={<Pruchase/>} path="/purchase" />
-        <Route element={profile || user ? <Profile/> :   <Navigate replace to="/"/>} path="/profile" />
+        <Route element={<Editor/>} path="/admin" />
+        <Route element={user ? <Profile/> :   <Navigate replace to="/"/>} path="/profile" />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

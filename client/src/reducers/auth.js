@@ -8,22 +8,20 @@ export default (state = { profile: null, loading: false , error : null ,success:
     case AUTH_ERROR:
       return { ...state, error: action.payload };
       case AUTH_SUCCESS:
-        return { ...state, success: true };
+        return { ...state, success: action.payload };
     case CLOSE:
       return { ...state, error: false , success:null };
     case LOGIN:
       localStorage.setItem("profile", JSON.stringify(action.payload));
       return { ...state, profile: action.payload };
     case SIGNUP:
-      if (action.payload.error){
-        return { ...state, error: action.payload };
-      }
       return { ...state, profile: action.payload };
     case LOGOUT:
       localStorage.removeItem("profile");
       localStorage.removeItem("user");
       return { ...state, profile: null,error:null };
     case GETUSER:
+      console.log("reducer",action.payload);
       const user = JSON.parse(localStorage.getItem("profile"))
       if (!action.payload.plan){
         action.payload.plan = "Free"

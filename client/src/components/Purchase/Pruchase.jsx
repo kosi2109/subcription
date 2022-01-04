@@ -7,30 +7,24 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
-  Input,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
-  Slide,
-  Snackbar,
-  Typography
 } from "@material-ui/core";
 
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closePop, getUserInfo } from "../../actions/auth";
+import { getUserInfo } from "../../actions/auth";
 import { getPlans } from "../../actions/plans";
 import { useStyles } from "./style";
 import Loading from "../Loading/Loading"
 import { buyPlan } from "../../actions/purchase";
 import { useNavigate } from "react-router-dom";
-import CancelSharpIcon from '@material-ui/icons/CancelSharp';
+import Noti from "../Notification/Noti";
 
-function SlideTransition(props) {
-  return <Slide {...props} direction="up" />;
-}
+
+
 
 
 
@@ -48,7 +42,6 @@ export default function Pruchase() {
   const { select } = useSelector((state) => state.purchase);
   const { plans } = useSelector((state) => state.plans);
   const user = useSelector((state)=> state.auth)
-  console.log(user);
   if (!select){
     var initialForm = {
       planName : "",
@@ -100,10 +93,9 @@ export default function Pruchase() {
 
   }
   
-
+  console.log(user);
   const canBuy = (plan_no)=>{
-    if (user.profile){
-      if (user.profile.plan.plan_type){
+      if (user.profile?.plan?.plan_type){
         if (!user.profile.plan.plan_type.plan_no){
           return false
         }
@@ -112,7 +104,6 @@ export default function Pruchase() {
         }else{
           return false
         }
-      }
     }
     return false
   }
@@ -199,14 +190,8 @@ export default function Pruchase() {
         </form>
       </Dialog>
       
-
-      <Snackbar open={user.error} autoHideDuration={6000} onClose={()=> dispatch(closePop())} TransitionComponent={SlideTransition}  >
-        <div className={classes.snackbar} >
-        <Button size="small" onClick={()=> dispatch(closePop())} ><CancelSharpIcon/></Button>
-          <Typography>{user.error}</Typography>
-        </div>
-        
-      </Snackbar>
+            <Noti message={user} />
+      
       
     </Container>
   );

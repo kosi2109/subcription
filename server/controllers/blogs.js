@@ -2,8 +2,18 @@ const { Blog, Plan } = require("../models/blogs");
 const User = require("../models/user");
 
 const getBlogs = async (req, res) => {
-  const blogs = await Blog.find().select("-body").populate("plan");
-  return res.json(blogs);
+  const {page} = req.query
+  try{
+    const LIMIT = 8
+    const startIndex = (Number(page)-1) * LIMIT
+    const total = await Blog.countDocuments({})
+    const blogs = await Blog.find({}).select("-body").populate("plan").sort({_id:-1}).limit(LIMIT).skip(startIndex);
+
+    return res.status(200).json({data:blogs,currentPage:Number(page),numberOfPages:Math.ceil(total / LIMIT)})
+  }catch(e){
+    console.log(e);
+  }
+  
 };
 
 const createBlog = async (req, res) => {

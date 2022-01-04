@@ -1,11 +1,12 @@
 import * as api from "../api"
 import { ENDLOADING, GETBLOGS,GETBLOGSBYID, LOADING } from "../constants"
 import { logout } from "./auth"
-export const getBLogs = () => async (dispatch)=>{
+export const getBLogs = (page) => async (dispatch)=>{
     try {
+        console.log(page);
         dispatch({type:LOADING})
-        const {data} = await api.getBlogs()
-        dispatch({type:GETBLOGS,payload:data})
+        const {data:{data, currentPage, numberOfPages}} = await api.getBlogs(page)
+        dispatch({type:GETBLOGS,payload:{data, currentPage, numberOfPages}})
         dispatch({type:ENDLOADING})
     } catch (error) {
         console.log(error);

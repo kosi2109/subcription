@@ -1,61 +1,56 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Container,
-  Grid,
-  Slide,
-  Snackbar,
-  Typography
-} from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Container, Grid } from "@material-ui/core";
 import useStyle from "./style";
 import Blog from "./Blog/Blog";
-import {useDispatch, useSelector} from "react-redux"
-import { useEffect } from "react";
-import { getBLogs } from "../../actions/blogs";
-import Loading from "../Loading/Loading";
-import CancelSharpIcon from '@material-ui/icons/CancelSharp';
-import { closePop } from "../../actions/auth";
+import { useDispatch, useSelector } from "react-redux";
 
-function SlideTransition(props) {
-  return <Slide {...props} direction="up" />;
+import Loading from "../Loading/Loading";
+import Noti from "../Notification/Noti";
+import Paginate from "../Pagination";
+import { useLocation } from "react-router-dom";
+import { getBLogs } from "../../actions/blogs";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
 }
 
-
 export default function Blogs() {
-    const classes = useStyle()
-    const dispatch = useDispatch()
-    
-
-    useEffect(()=>{
-      dispatch(getBLogs())
-    },[dispatch])
-
-    const {blogs,loading} = useSelector((state)=> state.blogs)
-    const auth = useSelector((state)=> state.auth)
-    
-    if (loading || !blogs){
-      return (
-        <Loading/>
-      )
+  const classes = useStyle();
+  const dispatch = useDispatch()
+  const { blogs, loading , numberOfPages  } = useSelector((state) => state.blogs);
+  const auth = useSelector((state) => state.auth);
+  const query = useQuery()
+  const page = query.get('page') || 1;
+  
+  useEffect(()=>{
+    if (page){
+      dispatch(getBLogs(page))
     }
-    
+  },[dispatch,page])
+  
+  
+  if (!loading && !blogs.length) {
+    return "No Blog";
+  }
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={2}>
-        {blogs.map((blog,key) =>(
-          <Blog key={key} id={blog._id} title={blog.title} date={blog.publish_date} plan={blog.plan.name} intro={blog.intro} />
+        {blogs.map((blog, key) => (
+          <Blog
+            key={key}
+            id={blog._id}
+            title={blog.title}
+            date={blog.publish_date}
+            plan={blog.plan.name}
+            intro={blog.intro}
+          />
         ))}
-        
       </Grid>
-
-      <Snackbar open={auth.success} autoHideDuration={6000} onClose={()=> dispatch(closePop())} TransitionComponent={SlideTransition}  >
-        <div className={classes.snackbar} >
-        <Button size="small" onClick={()=> dispatch(closePop())} ><CancelSharpIcon/></Button>
-          <Typography>Transaction have been completed. </Typography>
-        </div>
-        
-      </Snackbar>
+      <Noti message={auth} />
+      <Paginate page={page} numberOfPages={numberOfPages} />
     </Container>
   );
 }

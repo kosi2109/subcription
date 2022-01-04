@@ -6,7 +6,8 @@ export default (state = {blogs:[],loading:false},action)=>{
         case ENDLOADING:
             return {...state,loading:false}
         case GETBLOGS:
-            return {...state,blogs:action.payload}
+            return {...state,blogs:action.payload.data ,currentPage: action.payload.currentPage,
+                numberOfPages: action.payload.numberOfPages}
         default:
             return state
     }

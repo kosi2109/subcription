@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import {
   AppBar,
   Avatar,
@@ -13,14 +13,15 @@ import {
   Button,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../actions/auth";
-
+import decode from 'jwt-decode';
 
 const pages = [{ name: "Blogs", uri: "/" },{ name: "Pricing", uri: "/pricing" }];
 
 const Nav = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -62,6 +63,16 @@ const Nav = () => {
     var user = JSON.parse(profile)
   }
   
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) logoutHandle();
+    }
+  }, [location]);
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
