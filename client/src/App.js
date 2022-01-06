@@ -34,7 +34,7 @@ export default function App() {
         <Route element={!user ? <Auth/> :   <Navigate replace to="/"/>} path="/auth" />
         <Route element={<Pricing/>} path="/pricing" />
         <Route element={<Pruchase/>} path="/purchase" />
-        <Route element={<Editor/>} path="/admin" />
+        <Route element={ <Editor/> } path="/admin" />
         <Route element={user ? <Profile/> :   <Navigate replace to="/"/>} path="/profile" />
         <Route path="*" element={<NotFound />} />
       </Routes>

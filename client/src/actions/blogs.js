@@ -1,11 +1,11 @@
 import * as api from "../api"
 import { ENDLOADING, GETBLOGS,GETBLOGSBYID, LOADING } from "../constants"
 import { logout } from "./auth"
-export const getBLogs = (page) => async (dispatch)=>{
+
+export const getBLogs = (form) => async (dispatch)=>{
     try {
-        console.log(page);
         dispatch({type:LOADING})
-        const {data:{data, currentPage, numberOfPages}} = await api.getBlogs(page)
+        const {data:{data, currentPage, numberOfPages}} = await api.getBlogs(form)
         dispatch({type:GETBLOGS,payload:{data, currentPage, numberOfPages}})
         dispatch({type:ENDLOADING})
     } catch (error) {
@@ -26,3 +26,4 @@ export const getBlogById = (id,navigate) => async (dispatch)=>{
         console.log(error.message);
     }
 }
+

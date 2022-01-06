@@ -40,7 +40,7 @@ const getUser = async (req, res) => {
     return res.status(200).json({userId: user.id,
       fullName: user.fullName,
       userName: user.userName,
-      plan: user.plan});
+      plan: user.plan,isAdmin:user.isAdmin});
   }
   return res.status(401).json("You are not Authenticated");
 };
@@ -102,6 +102,7 @@ const login = async (req, res) => {
         fullName: user.fullName,
         userName: user.userName,
         plan: plan,
+        isAdmin: user.isAdmin,
       });
   } else {
     res.status(401).json({ error: "Password Incorrect" });

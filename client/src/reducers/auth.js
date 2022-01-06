@@ -21,7 +21,6 @@ export default (state = { profile: null, loading: false , error : null ,success:
       localStorage.removeItem("user");
       return { ...state, profile: null,error:null };
     case GETUSER:
-      console.log("reducer",action.payload);
       const user = JSON.parse(localStorage.getItem("profile"))
       if (!action.payload.plan){
         action.payload.plan = "Free"

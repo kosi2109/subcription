@@ -4,7 +4,7 @@ const {getBlogs,createBlog,getBlog} = require("../controllers/blogs")
 const checkPlan = require("../middleware/auth")
 
 router.get('/',getBlogs)
-router.post('/',createBlog)
+router.post('/',checkPlan,createBlog)
 router.get('/:id',checkPlan,getBlog)
 
 

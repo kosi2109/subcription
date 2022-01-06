@@ -21,10 +21,12 @@ export default function Blogs() {
   const auth = useSelector((state) => state.auth);
   const query = useQuery()
   const page = query.get('page') || 1;
-  
+  const plan = query.get('plan')
+  const title = query.get('title')
+  const form = {page,plan,title}
   useEffect(()=>{
     if (page){
-      dispatch(getBLogs(page))
+      dispatch(getBLogs(form))
     }
   },[dispatch,page])
   

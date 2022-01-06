@@ -19,8 +19,12 @@ export const user = (id) => API.get(`/users/${id}`)
 export const upgrade = (formData) => API.post(`/users/upgrade`,formData)
 // blogs
 export const getBlogsById = (id) => API.get(`/blogs/${id}`)
-export const getBlogs = (page) => API.get(`/blogs?page=${page}`)
+export const getBlogs = (form) => API.get(`/blogs?page=${form.page}&plan=${form.plan}&qrery=${form.title}`)
 
 
 // plans
 export const plans = () => API.get(`/plans`)
+
+
+// admin
+export const createBlog = (form) => API.post(`/blogs`,form)

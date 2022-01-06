@@ -1,20 +1,19 @@
-.wrapper-class{
-    background-color: #868686;
-
+.form {
+  padding: 1em 1em;
+}
+.text {
+  margin: 1em 0 !important;
 }
 
-.editor-class{
-    background-color: red;
+
+@media screen and (min-width:480px){
+    .form {
+        padding: 1em 5em;
+      }
 }
 
-.toolbar-class{
-    background-color: wheat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.rdw-inline-wrapper , .rdw-list-wrapper, .rdw-text-align-wrapper{
-    display: flex;
+@media screen and (min-width:720px){
+    .form {
+        padding: 1em 10em;
+      }
 }

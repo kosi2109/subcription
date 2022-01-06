@@ -10,17 +10,20 @@ const planSchema = mongoose.Schema({
 const blogSchema = mongoose.Schema({
     title : {
         type : String,
+        required : true,
     },
     intro : {
         type : String,
+        required : true,
     },
     body : {
         type : String,
+        required : true,
     },
     plan : {
         type : mongoose.Types.ObjectId,
         ref : "Plan",
-        required : false
+        required : true
     },
     publish_date : {
         type : Date,

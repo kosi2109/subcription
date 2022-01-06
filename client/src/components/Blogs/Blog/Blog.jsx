@@ -33,7 +33,7 @@ export default function Blog({id,title,date,plan,intro}) {
               
             </CardContent>
             <CardActions style={{display:"flex" ,justifyContent:"space-between"}}>
-              <Button size="small">Share</Button>
+        
               <Link to={`/b/${id}`}>
                 <Button size="small">View</Button>
               </Link>

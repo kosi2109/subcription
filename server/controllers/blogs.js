@@ -17,11 +17,23 @@ const getBlogs = async (req, res) => {
 };
 
 const createBlog = async (req, res) => {
+  const user = await User.findById(req.userId).populate({ 
+    path: 'plan',
+    populate: {
+      path: 'plan_type',
+      model: 'Plan'
+    } 
+  })
+
+  if (!user || !user.isAdmin){
+    return res.status(401).json({error:"You Are Not Authenticate ."})
+  }
+
   const data = {
     title: req.body.title,
     intro: req.body.intro,
     body: req.body.body,
-    plan: req.body.plan,
+    plan: req.body.planId,
   };
 
   try {
